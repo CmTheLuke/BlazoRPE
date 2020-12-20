@@ -22,6 +22,9 @@ jobs:
       - name: Publish .NET Project
         run: dotnet publish BlazoRPE01.csproj -c Release -o release --nologo
       
+      - name: List files
+        run: ls -R /home/runner/work
+      
       - name: Change base-tag in index.html from / to BlazoRPE
         run: sed -i 's/<base href="\/" \/>/<base href="\/BlazoRPE\/" \/>/g' /home/runner/work/BlazoRPE/BlazoRPE/release/wwwroot/index.html
 
