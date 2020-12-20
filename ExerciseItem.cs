@@ -10,6 +10,4 @@ public class ExerciseItem {
     public double IncreasePercentage{get; set;}
     public int NextReps{get; set;}  
     public double RpeSixOffsetPercentage{get; set;} = 5;
-
-    public string RandomText {get;set;} = "This is totes rando!";  
 }
