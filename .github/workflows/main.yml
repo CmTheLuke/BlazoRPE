@@ -23,7 +23,7 @@ jobs:
         run: dotnet publish BlazoRPE01.csproj -c Release -o release --nologo
       
       - name: Change base-tag in index.html from / to BlazoRPE
-        run: sed -i 's/<base href="\/" \/>/<base href="\/BlazoRPE\/" \/>/g' release/wwwroot/index.html
+        run: sed -i 's/<base href="\/" \/>/<base href="\/BlazoRPE\/" \/>/g' /home/runner/work/BlazoRPE/BlazoRPE/release/wwwroot/index.html
 
       - name: Add .nojekyll file
         run: touch release/wwwroot/.nojekyll
