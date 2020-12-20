@@ -1,0 +1,36 @@
+name: Deploy to GitHub Pages
+
+# Run workflow on every push to the main branch
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy-to-github-pages:
+    #Use ubuntu-latest to run the steps
+    runs-on: ubuntu-latest
+    steps:
+      # uses GitHub's checkout action to checkout code from the main branch
+      - uses: actions/checkout@v2 
+      
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
+          dotnet-version: 5.0
+
+      - name: Publish .NET Project
+        run: dotnet publish BlazoRPE01.csproj -c Release -o release --nologo
+      
+      - name: Change base-tag in index.html from / to BlazoRPE
+        run: sed -i 's/<base href="\/" \/>/<base href="\/BlazoRPE\/" \/>/g' release/wwwroot/index.html
+
+      - name: Add .nojekyll file
+        run: touch release/wwwroot/.nojekyll
+    
+      - name: Commit wwwroot to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: release/wwwroot
