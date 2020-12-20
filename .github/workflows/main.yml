@@ -25,8 +25,8 @@ jobs:
       - name: Find index file
         run: find . -name index.html
       
-      #- name: Change base-tag in index.html from / to BlazoRPE
-      #  run: sed -i 's/<base href="\/" \/>/<base href="\/BlazoRPE\/" \/>/g' /home/runner/work/BlazoRPE/BlazoRPE/release/wwwroot/index.html
+      - name: Change base-tag in index.html from / to BlazoRPE
+        run: sed -i 's/<base href="\/" \/>/<base href="\/BlazoRPE\/" \/>/g' /home/runner/work/BlazoRPE/BlazoRPE/bin/Release/net5.0/publish/wwwroot/index.html
 
       #- name: Add .nojekyll file
       #  run: touch release/wwwroot/.nojekyll
