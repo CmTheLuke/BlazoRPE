@@ -16,23 +16,16 @@
 
 <div><button class="btn btn-primary" @onclick="OnClickCalculate">Calculate</button></div>
 <div><span>@exerciseItem.Name</span></div>
-<div>
-    <ol>
-    @foreach (var set in targetSets)
-    {
-        <li>@set</li>   
-    }
-    </ol>
-</div>
+
+<Results RpeCalcResults="results" />
 
 @code {
     private ExerciseItem exerciseItem = new ExerciseItem();
-    private IList<string> targetSets = new List<string>();
+    private ResultItem results;
 
     private void OnClickCalculate(){
         Console.WriteLine("Calculate was clicked!");
         Console.WriteLine($"Calculating based off of {exerciseItem.PreviousWeight} x {exerciseItem.PreviousReps} @ {exerciseItem.PreviousRpe}");
-        targetSets.Clear();        
-        targetSets = RpeCalculator.Calculate(exerciseItem);
+        results = RpeCalculator.Calculate(exerciseItem);
     }
 }

@@ -18,6 +18,18 @@ public class TargetSet {
     }
 }
 
+public class ResultItem {
+    public ResultItem(double prevOneRepMax, double targetOneRepMax, List<TargetSet> targetSets){
+        PrevOneRepMax = prevOneRepMax;
+        TargetOneRepMax = targetOneRepMax;
+        TargetSets = targetSets;
+    }
+
+    public double PrevOneRepMax{get;}
+    public double TargetOneRepMax{get;}
+    public List<TargetSet> TargetSets{get;}
+}
+
 public class RpeCalculator{
     private static Dictionary<int, Dictionary<double,double>> RpeChart = new Dictionary<int, Dictionary<double,double>> {
         {1,   new Dictionary<double,double>{ {10,100},  {9.5,97.8}, {9,95.5}, {8.5,93.9}, {8,92.9}, {7.5,90.7}, {7,89.2}, {6.5,87.8}, {6,86.3} }}, 
@@ -33,16 +45,16 @@ public class RpeCalculator{
         {11,  new Dictionary<double,double>{ {10,70.7}, {9.5,69.4}, {9,68.0}, {8.5,66.7}, {8,65.3}, {7.5,64.0}, {7,62.6}, {6.5,61.3}, {6,59.9} }}, 
         {12,  new Dictionary<double,double>{ {10,68.0}, {9.5,66.7}, {9,65.3}, {8.5,64.0}, {8,62.6}, {7.5,61.3}, {7,59.9}, {6.5,58.6}, {6,57.4} }} };
 
-    public static List<string> Calculate(ExerciseItem exercise) {
+    public static ResultItem Calculate(ExerciseItem exercise) {
         var prevIntensityFactor = (RpeChart[exercise.PreviousReps][exercise.PreviousRpe]) / 100.0;
         var prevE1rm = System.Math.Round(exercise.PreviousWeight / prevIntensityFactor);
         var targetE1rm = prevE1rm + (prevE1rm * (exercise.IncreasePercentage/100.0));    
         var targetSets = CreateTargetSets(targetE1rm, exercise.NextReps, new List<int>{6,7,8}, exercise.RpeSixOffsetPercentage);
-        return targetSets.Select(x => x.ToString()).ToList();
+        return new ResultItem(prevE1rm, targetE1rm, targetSets);
     }
 
     private static List<TargetSet> CreateTargetSets(double target1Rm, int targetReps, List<int>targetRpes, double rpeSixOffset) {
-    var result = new List<TargetSet>();
+    var targetSets = new List<TargetSet>();
     
     foreach (var targetRpe in targetRpes) {
         Console.WriteLine($"Calculating for Target RPE of {targetRpe}");
@@ -51,11 +63,11 @@ public class RpeCalculator{
             nextIntensityFactor -= (rpeSixOffset / 100.0);
         }
         var targetWeight = Math.Round(target1Rm * nextIntensityFactor);
-        result.Add(new TargetSet(targetWeight, targetReps, targetRpe));
+        targetSets.Add(new TargetSet(targetWeight, targetReps, targetRpe));
         // console.log(`${targetWeight} x ${targetReps} @ ${targetRpe}`);
     }
 
-    return result;   
+    return targetSets;   
   }
 }
 
