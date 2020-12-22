@@ -1,38 +1,56 @@
-﻿@* <p>Exercise</p> *@
-<div><label for="ExerciseName">Exercise</label></div>
-<div><input type="text" id="ExerciseName" @bind="exerciseItem.Name"></div>
-<div><label for="PrevWeight">Previous Weight</label></div>
-<div><input type="text" id="PrevWeight" @bind="exerciseItem.PreviousWeight"></div>
-<div><label for="PrevReps">Previous Reps</label></div>
-<div><input type="text" id="PrevReps" @bind="exerciseItem.PreviousReps"></div>
-<div><label for="PrevRpe">Previous Rpe</label></div>
-<div><input type="text" id="PrevRpe" @bind="exerciseItem.PreviousRpe"></div>
-<div><label for="NextReps">Next Reps</label></div>
-<div><input type="text" id="NextReps" @bind="exerciseItem.NextReps"></div>
-<div><label for="IncreasePct">Increase %</label></div>
-<div><input type="text" id="IncreasePct" @bind="exerciseItem.IncreasePercentage"></div>
-<div><label for="RpeSixOffsetPct">RPE 6 Offset %</label></div>
-<div><input type="text" id="RpeSixOffsetPct" @bind="exerciseItem.RpeSixOffsetPercentage"></div>
+﻿@* <p>Exercise</p> *@               
+<div class="container-fluid">
+    <form>
+    <div class="row">
+        <div class="col"><label for="ExerciseName">Exercise</label></div>
+        <div class="col"><input type="text" id="ExerciseName" @bind="exerciseItem.Name"></div>        
+    </div>
 
-<div><button class="btn btn-primary" @onclick="OnClickCalculate">Calculate</button></div>
-<div><span>@exerciseItem.Name</span></div>
-<div>
-    <ol>
-    @foreach (var set in targetSets)
-    {
-        <li>@set</li>   
-    }
-    </ol>
+    <div class="row">
+        <div class="col"><label for="PrevWeight">Prev Weight</label></div>
+        <div class="col"><input type="text" id="PrevWeight" @bind="exerciseItem.PreviousWeight"></div>
+    </div>
+
+    <div class="row">
+        <div class="col"><label for="PrevReps">Prev Reps</label></div>
+        <div class="col"><input type="text" id="PrevReps" @bind="exerciseItem.PreviousReps"></div>
+    </div>
+    
+    <div class="row">
+        <div class="col"><label for="PrevRpe">Prev Rpe</label></div>
+        <div class="col"><input type="text" id="PrevRpe" @bind="exerciseItem.PreviousRpe"></div>
+    </div>
+
+    <div class="row">
+        <div class="col"><label for="NextReps">Next Reps</label></div>
+        <div class="col"><input type="text" id="NextReps" @bind="exerciseItem.NextReps"></div>
+    </div>
+
+    <div class="row">
+        <div class="col"><label for="IncreasePct">Incr. %</label></div>
+        <div class="col"><input type="text" id="IncreasePct" @bind="exerciseItem.IncreasePercentage"></div>
+    </div>
+
+    <div class="row">
+        <div class="col"><label for="RpeSixOffsetPct">RPE 6 Offset %</label></div>
+        <div class="col"><input type="text" id="RpeSixOffsetPct" @bind="exerciseItem.RpeSixOffsetPercentage"></div>
+    </div>
+    <div><button class="btn btn-info" @onclick="OnClickCalculate" @onclick:preventDefault>Calculate</button></div>
+    </form>
 </div>
+
+
+<div><span>@exerciseItem.Name</span></div>
+
+<Results RpeCalcResults="results" />
 
 @code {
     private ExerciseItem exerciseItem = new ExerciseItem();
-    private IList<string> targetSets = new List<string>();
+    private ResultItem results;
 
     private void OnClickCalculate(){
         Console.WriteLine("Calculate was clicked!");
         Console.WriteLine($"Calculating based off of {exerciseItem.PreviousWeight} x {exerciseItem.PreviousReps} @ {exerciseItem.PreviousRpe}");
-        targetSets.Clear();        
-        targetSets = RpeCalculator.Calculate(exerciseItem);
+        results = RpeCalculator.Calculate(exerciseItem);
     }
 }
