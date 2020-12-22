@@ -1,22 +1,23 @@
 ﻿@* <p>Exercise</p> *@               
 <div class="container-fluid">
+    <form>
     <div class="row">
         <div class="col"><label for="ExerciseName">Exercise</label></div>
         <div class="col"><input type="text" id="ExerciseName" @bind="exerciseItem.Name"></div>        
     </div>
 
     <div class="row">
-        <div class="col"><label for="PrevWeight">Previous Weight</label></div>
+        <div class="col"><label for="PrevWeight">Prev Weight</label></div>
         <div class="col"><input type="text" id="PrevWeight" @bind="exerciseItem.PreviousWeight"></div>
     </div>
 
     <div class="row">
-        <div class="col"><label for="PrevReps">Previous Reps</label></div>
+        <div class="col"><label for="PrevReps">Prev Reps</label></div>
         <div class="col"><input type="text" id="PrevReps" @bind="exerciseItem.PreviousReps"></div>
     </div>
     
     <div class="row">
-        <div class="col"><label for="PrevRpe">Previous Rpe</label></div>
+        <div class="col"><label for="PrevRpe">Prev Rpe</label></div>
         <div class="col"><input type="text" id="PrevRpe" @bind="exerciseItem.PreviousRpe"></div>
     </div>
 
@@ -26,7 +27,7 @@
     </div>
 
     <div class="row">
-        <div class="col"><label for="IncreasePct">Increase %</label></div>
+        <div class="col"><label for="IncreasePct">Incr. %</label></div>
         <div class="col"><input type="text" id="IncreasePct" @bind="exerciseItem.IncreasePercentage"></div>
     </div>
 
@@ -34,9 +35,11 @@
         <div class="col"><label for="RpeSixOffsetPct">RPE 6 Offset %</label></div>
         <div class="col"><input type="text" id="RpeSixOffsetPct" @bind="exerciseItem.RpeSixOffsetPercentage"></div>
     </div>
+    <div><button class="btn btn-primary" @onclick="OnClickCalculate" @onclick:preventDefault>Calculate</button></div>
+    </form>
 </div>
 
-<div><button class="btn btn-primary" @onclick="OnClickCalculate">Calculate</button></div>
+
 <div><span>@exerciseItem.Name</span></div>
 
 <Results RpeCalcResults="results" />
