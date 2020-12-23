@@ -22,4 +22,13 @@
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 
+<script>
+    function selectText(tbId) {
+        var tb = document.querySelector("#" + tbId);
+        if (tb.select) {
+            tb.select();
+        }
+    }
+</script>
+
 </html>
