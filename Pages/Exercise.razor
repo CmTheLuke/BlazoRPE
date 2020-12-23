@@ -1,39 +1,44 @@
-﻿@* <p>Exercise</p> *@               
+﻿@inject IJSRuntime _js
+
+
+@* <p>Exercise</p> *@               
 <div class="container-fluid">
     <form>
     <div class="row">
-        <div class="col"><label for="ExerciseName">Exercise</label></div>
-        <div class="col"><input type="text" id="ExerciseName" @bind="exerciseItem.Name"></div>        
+        <div class="col"><label for=@ExerciseNameId>Exercise</label></div>
+        <div class="col"><input type="text" id=@ExerciseNameId @bind="exerciseItem.Name" @onfocus="@(e => SelectText(ExerciseNameId))"></div>
     </div>
 
     <div class="row">
-        <div class="col"><label for="PrevWeight">Prev Weight</label></div>
-        <div class="col"><input type="text" id="PrevWeight" @bind="exerciseItem.PreviousWeight"></div>
+        <div class="col"><label for=@PrevWeightId>Prev Weight</label></div>
+        <div class="col">
+            <input type="number" id=@PrevWeightId @bind="exerciseItem.PreviousWeight" @onfocus="@(e => SelectText(PrevWeightId))">
+        </div>
     </div>
 
     <div class="row">
-        <div class="col"><label for="PrevReps">Prev Reps</label></div>
-        <div class="col"><input type="text" id="PrevReps" @bind="exerciseItem.PreviousReps"></div>
+        <div class="col"><label for=@PrevRepsId>Prev Reps</label></div>
+        <div class="col"><input type="number" id=@PrevRepsId @bind="exerciseItem.PreviousReps" @onfocus="@(e => SelectText(PrevRepsId))"></div>
     </div>
     
     <div class="row">
-        <div class="col"><label for="PrevRpe">Prev Rpe</label></div>
-        <div class="col"><input type="text" id="PrevRpe" @bind="exerciseItem.PreviousRpe"></div>
+        <div class="col"><label for=@PrevRpeId>Prev Rpe</label></div>
+        <div class="col"><input type="number" id=@PrevRpeId @bind="exerciseItem.PreviousRpe" @onfocus="@(e => SelectText(PrevRpeId))"></div>
     </div>
 
     <div class="row">
-        <div class="col"><label for="NextReps">Next Reps</label></div>
-        <div class="col"><input type="text" id="NextReps" @bind="exerciseItem.NextReps"></div>
+        <div class="col"><label for=@NextRepsId>Next Reps</label></div>
+        <div class="col"><input type="number" id=@NextRepsId @bind="exerciseItem.NextReps" @onfocus="@(e => SelectText(NextRepsId))"></div>
     </div>
 
     <div class="row">
-        <div class="col"><label for="IncreasePct">Incr. %</label></div>
-        <div class="col"><input type="text" id="IncreasePct" @bind="exerciseItem.IncreasePercentage"></div>
+        <div class="col"><label for=@IncrPctId>Incr. %</label></div>
+        <div class="col"><input type="number" id=@IncrPctId @bind="exerciseItem.IncreasePercentage" @onfocus="@(e => SelectText(IncrPctId))"></div>
     </div>
 
     <div class="row">
-        <div class="col"><label for="RpeSixOffsetPct">RPE 6 Offset %</label></div>
-        <div class="col"><input type="text" id="RpeSixOffsetPct" @bind="exerciseItem.RpeSixOffsetPercentage"></div>
+        <div class="col"><label for=Rpe6OffsetId>RPE 6 Offset %</label></div>
+        <div class="col"><input type="number" id=@Rpe6OffsetId @bind="exerciseItem.RpeSixOffsetPercentage" @onfocus="@(e => SelectText(Rpe6OffsetId))"></div>
     </div>
     <div><button class="btn btn-info" @onclick="OnClickCalculate" @onclick:preventDefault>Calculate</button></div>
     </form>
@@ -45,6 +50,14 @@
 <Results RpeCalcResults="results" />
 
 @code {
+    private readonly string ExerciseNameId = "ExerciseName";
+    private readonly string PrevWeightId = "PrevWeight";
+    private readonly string PrevRepsId = "PrevReps";
+    private readonly string PrevRpeId = "PrevRpe";
+    private readonly string NextRepsId = "NextReps";
+    private readonly string IncrPctId = "IncreasePct";
+    private readonly string Rpe6OffsetId = "RpeSixOffsetId";
+
     private ExerciseItem exerciseItem = new ExerciseItem();
     private ResultItem results;
 
@@ -53,4 +66,20 @@
         Console.WriteLine($"Calculating based off of {exerciseItem.PreviousWeight} x {exerciseItem.PreviousReps} @ {exerciseItem.PreviousRpe}");
         results = RpeCalculator.Calculate(exerciseItem);
     }
+
+    private async Task PrevWtGotFocus(FocusEventArgs ea) {
+        Console.WriteLine($"Previous weight got focus");
+        await _js.InvokeVoidAsync("selectText", "PrevWeight");
+    }
+
+    private async Task SelectText(string inputId){
+        //Console.WriteLine("Used a lambda");
+        Console.WriteLine($"Selecting text in {inputId}");
+        await _js.InvokeVoidAsync("selectText", inputId);
+    }
+
+    //async Task FocusInHandler(FocusEventArgs e)
+    //{
+      //  await _js.InvokeVoidAsync("selectText", TheTbId);
+    //}
 }
